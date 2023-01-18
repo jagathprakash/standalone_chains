@@ -1,0 +1,29 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: demo-pipelinerun-
+spec:
+  serviceAccountName: jp-ksa
+  pipelineRef:
+    resolver: git
+    params:
+      - name: url
+        value: https://github.com/jagathprakash/tekton_slsa_demo.git
+      - name: pathInRepo
+        value: pipeline.yaml
+      - name: revision
+        value: main
+  workspaces:
+  - name: shared-data
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Mi
+  params:
+  - name: repo-url
+    value: https://github.com/bendory/mini-true.git
+  - name: image-reference
+    value: us-docker.pkg.dev/${PROJECT_ID}/${CLOUD_REPO}/${CLUSTER_NAME}
