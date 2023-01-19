@@ -12,14 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kind: Namespace
-apiVersion: v1
-metadata:
-  name: tekton-chains
-  labels:
-    app.kubernetes.io/instance: default
-    app.kubernetes.io/part-of: tekton-chains
----
 apiVersion: v1
 kind: Secret
 metadata:
@@ -88,10 +80,11 @@ spec:
       serviceAccountName: tekton-chains-controller
       containers:
         - name: tekton-chains-controller
-          image: gcr.io/tekton-releases/github.com/tektoncd/chains/cmd/controller:v0.14.0@sha256:b10b5a6298fe78ffeb72b7ed69794b0e7315a952482b9bff80858bc6746cbe4f
+          image: gcr.io/jagathprakash-test/controller-92006fd957c0afd31de6a40b3e33b39f@sha256:70653e0a787925f9c471f32d6b7e8b1c6f66a1b62432a826e800b7865f254b4d
+          # image: gcr.io/tekton-releases/github.com/tektoncd/chains/cmd/controller:v0.14.0@sha256:b10b5a6298fe78ffeb72b7ed69794b0e7315a952482b9bff80858bc6746cbe4f
           args: [
-            "-cluster=${CLUSTER_PIPELINE_FULL_NAME}",
-            "-kubeconfig=/mnt/kubeconfig/config"
+            "--cluster", "${CLUSTER_PIPELINE_FULL_NAME}",
+            "--kubeconfig", "/mnt/kubeconfig/config"
           ]
           volumeMounts:
             - name: signing-secrets

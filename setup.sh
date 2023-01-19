@@ -145,7 +145,10 @@ else
   k_chains create serviceaccount "${KSA_NAME}" --namespace "${NAMESPACE}"
   echo "Successfully created Kubernetes service account ${KSA_NAME} in ${NAMESPACE} in Chains Cluster."
 fi
-k_chains create configmap kubeconfigmap --from-file=${KUBECONFIG_FILE}
+
+k_chains apply -f namespace.yaml
+k_chains create configmap kubeconfigmap --from-file=${KUBECONFIG_FILE} -n tekton-chains
+
 k_chains apply -f chains.yaml
 
 gcloud iam service-accounts add-iam-policy-binding $GSA_NAME@$PROJECT_ID.iam.gserviceaccount.com \
